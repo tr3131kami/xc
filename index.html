@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>クリスマスカウントダウン | とろろぉーーーー</title>
+<title>クリスマスカウントダウン</title>
 <meta name="description" content="クリスマスまでの日数をカウントダウンするアプリ。あと何日・何時間・何分・何秒かがリアルタイムで分かります。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,6 +126,7 @@
       <div class="unit"><div class="num" id="h">--</div><div class="lab">時間</div></div>
       <div class="unit green"><div class="num" id="m">--</div><div class="lab">分</div></div>
       <div class="unit gold"><div class="num" id="s">--</div><div class="lab">秒</div></div>
+      <div class="unit"><div class="num" id="ms">---</div><div class="lab">ミリ秒</div></div>
     </div>
     <div class="bar-wrap">
       <div class="bar-lab" id="barLab">12月の進み具合</div>
@@ -134,7 +135,6 @@
     <div class="message" id="message"></div>
   </div>
 
-  <p class="foot">by <a href="https://youtube.com/@t-o-r-o-r-o-r-o-r-o" target="_blank" rel="noopener">とろろぉーーーー</a></p>
 </div>
 
 <script>
@@ -147,6 +147,7 @@
       h: document.getElementById('h'),
       m: document.getElementById('m'),
       s: document.getElementById('s'),
+      ms: document.getElementById('ms'),
       barFill: document.getElementById('barFill'),
       barLab: document.getElementById('barLab'),
       msg: document.getElementById('message')
@@ -172,6 +173,7 @@
         el.h.textContent = '00';
         el.m.textContent = '00';
         el.s.textContent = '00';
+        el.ms.textContent = '000';
         el.msg.textContent = '🎄 メリークリスマス！ 🎁';
       } else {
         var totalSec = Math.floor(diff / 1000);
@@ -179,6 +181,8 @@
         el.h.textContent = pad(Math.floor(totalSec % 86400 / 3600));
         el.m.textContent = pad(Math.floor(totalSec % 3600 / 60));
         el.s.textContent = pad(totalSec % 60);
+        var msPart = diff - totalSec * 1000;
+        el.ms.textContent = ('00' + msPart).slice(-3);
         el.msg.textContent = '';
       }
 
@@ -192,7 +196,7 @@
     }
 
     update();
-    setInterval(update, 250);
+    setInterval(update, 31);
 
     // 雪
     var cv = document.getElementById('snow');
