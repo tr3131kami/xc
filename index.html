@@ -186,13 +186,24 @@
         el.msg.textContent = '';
       }
 
-      // 進捗バー: 12月1日 0:00 → 12月25日 0:00
-      var start = new Date(target.getFullYear(), 11, 1, 0, 0, 0, 0).getTime();
+      // 進捗バー: 12月は「12月の進み具合」(12月1日→25日)、それ以外は「クリスマスまでの進み具合」(1月1日→12月25日)
+      var dec1 = new Date(target.getFullYear(), 11, 1, 0, 0, 0, 0);
+      var start, label;
+      if (now.getTime() >= dec1.getTime() || isXmasDay) {
+        start = dec1.getTime();
+        label = '12月の進み具合';
+      } else {
+        start = new Date(target.getFullYear(), 0, 1, 0, 0, 0, 0).getTime();
+        if (now.getTime() < start) {
+          start = new Date(target.getFullYear() - 1, 11, 25, 0, 0, 0, 0).getTime();
+        }
+        label = 'クリスマスまでの進み具合';
+      }
       var p = (now.getTime() - start) / (target.getTime() - start) * 100;
       if (isXmasDay) p = 100;
       p = Math.max(0, Math.min(100, p));
       el.barFill.style.width = p.toFixed(1) + '%';
-      el.barLab.textContent = '12月の進み具合 ' + p.toFixed(1) + '%';
+      el.barLab.textContent = label + ' ' + p.toFixed(1) + '%';
     }
 
     update();
